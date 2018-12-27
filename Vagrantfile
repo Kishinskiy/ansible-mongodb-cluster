@@ -10,17 +10,23 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "db1" do |db1|
     db1.vm.network "private_network", ip: "192.168.33.10"
-    db1.vm.synced_folder "mongodb_config.conf", "/etc/mongodb_config.conf"
-    db1.vm.synced_folder "mongos.conf", "/etc/mongos.conf"
+    db1.vm.provision "shell", inline: <<-SHELL
+      cp /vagrant/mongodb_config.conf /etc/mongodb_config.conf
+      cp /vagrant/mongos.conf /etc/mongos.conf
+    SHELL
   end
 
   config.vm.define "db2" do |db2|
     db2.vm.network "private_network", ip: "192.168.33.20"
-    db2.vm.synced_folder "mongodb_shard.conf", "/etc/mongodb_shard.conf"
+    db2.vm.provision "shell", inline: <<-SHELL
+      cp /vagrant/mongodb_shard.conf /etc/mongodb_shard.conf
+    SHELL
   end
 
   config.vm.define "db3" do |db3|
     db3.vm.network "private_network", ip: "192.168.33.30"
-    db3.vm.synced_folder "mongodb_shard.conf", "/etc/mongodb_shard.conf"
+    db3.vm.provision "shell", inline: <<-SHELL
+      cp /vagrant/mongodb_shard.conf /etc/mongodb_shard.conf
+    SHELL
   end
 end
