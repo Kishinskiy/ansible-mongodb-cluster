@@ -6,27 +6,24 @@ Vagrant.configure("2") do |config|
      apt-get update
      apt-get install -y mongodb-org
      cd /home/vagrant && openssl rand -base64 741 > mongodb-keyfile && chmod 600 mongodb-keyfile
+     cp /vagrant/mongod.conf /etc/mongod.conf
    SHELL
 
   config.vm.define "db1" do |db1|
     db1.vm.network "private_network", ip: "192.168.33.10"
     db1.vm.provision "shell", inline: <<-SHELL
-      cp /vagrant/mongodb_config.conf /etc/mongodb_config.conf
-      cp /vagrant/mongos.conf /etc/mongos.conf
     SHELL
   end
 
   config.vm.define "db2" do |db2|
     db2.vm.network "private_network", ip: "192.168.33.20"
     db2.vm.provision "shell", inline: <<-SHELL
-      cp /vagrant/mongodb_shard.conf /etc/mongodb_shard.conf
     SHELL
   end
 
   config.vm.define "db3" do |db3|
     db3.vm.network "private_network", ip: "192.168.33.30"
     db3.vm.provision "shell", inline: <<-SHELL
-      cp /vagrant/mongodb_shard.conf /etc/mongodb_shard.conf
     SHELL
   end
 end
